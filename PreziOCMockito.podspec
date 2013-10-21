@@ -1,12 +1,12 @@
 Pod::Spec.new do |s|
   s.name     = 'PreziOCMockito'
-  s.version  = '1.0.0'
+  s.version  = '1.0.1'
   s.license  = 'MIT'
   s.summary  = 'Prezi fork of OCMockito.'
   s.homepage = 'https://github.com/prezi/OCMockito'
   s.author   = { 'Jon Reid' => 'jon@qualitycoding.org' }
   
-  s.source   = { :git => 'https://github.com/prezi/OCMockito.git', :tag => 'v1.0.0' }
+  s.source   = { :git => 'https://github.com/prezi/OCMockito.git', :tag => 'v1.0.1' }
   
   s.description = %{
      Prezi fork of OCMockito.
