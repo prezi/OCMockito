@@ -98,6 +98,12 @@ NSArray *TKArrayArgumentsForInvocation(NSInvocation *invocation)
             void* arg;
             [invocation getArgument:&arg atIndex:i];
             [args insertObject:(__bridge id)(arg) atIndex:ai];
+        } else if (argType[0] == '{') { // Structure
+            NSUInteger maxArgSize = [[invocation methodSignature] frameLength];
+			NSMutableData *argumentData = [[NSMutableData alloc] initWithLength:maxArgSize];
+			[invocation getArgument:[argumentData mutableBytes] atIndex:ai];
+			[args insertObject:[NSValue valueWithBytes:[argumentData bytes] objCType:argType]
+                       atIndex:ai];
         } else {
             NSCAssert1(NO, @"-- Unhandled type: %s", argType);
         }
@@ -179,5 +185,13 @@ void MKTSetReturnValueForInvocation(NSInvocation *invocation, id returnValue)
     {
         double value = [returnValue doubleValue];
         [invocation setReturnValue:&value];
+    } else if (returnType[0] == '{') {
+        NSUInteger size = 0;
+        NSGetSizeAndAlignment(returnType, &size, NULL);
+        void *s = malloc(size);
+        bzero(s, size);
+        [returnValue getValue:s];
+        [invocation setReturnValue:s];
+        free(s);
     }
 }
